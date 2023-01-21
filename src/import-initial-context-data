@@ -1,0 +1,270 @@
+#!/bin/bash
+#
+#  import-initial-context-data.sh: script to initialize the Orion context data
+#  This will POST all the entities at once to the Orion Context Broker
+#  Reference: https://github.com/FIWARE/tutorials.Step-by-Step
+
+set -e
+
+printf "⏳ Loading initial context data \n"
+
+#
+# Create multiple Weather stations
+#
+
+curl -s -o /dev/null -X POST \
+  'http://orion:1026/v2/op/update' \
+  -H 'Content-Type: application/json' \
+  -g -d '{
+    "actionType": "append",
+    "entities": [
+  	    {
+            "id": "urn:ngsi-ld:WeatherStation:001",
+            "type": "WeatherStation",
+            "name": {
+                "type": "Text",
+                "value": "Konstanz"
+            }
+        },
+  	    {
+            "id": "urn:ngsi-ld:WeatherStation:002",
+            "type": "WeatherStation",
+            "name": {
+                "type": "Text",
+                "value": "Zürich"
+            }
+        },
+  	    {
+            "id": "urn:ngsi-ld:WeatherStation:003",
+            "type": "WeatherStation",
+            "name": {
+                "type": "Text",
+                "value": "Prague"
+            }
+        }
+    ]
+}'
+
+printf "\tWeather Station entities created\n"
+
+#
+# Creation of the group of services for sensors using MQTT
+#
+
+curl -s -o /dev/null -X POST \
+  'http://iot-agent:$IOTA_NORTH_PORT/iot/services' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: iotupo' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+    "services": [
+        {
+            "apikey":      "4pacosaucedo2guadiaro4s40d59ov",
+            "cbroker":     "http://orion:$ORION_PORT",
+            "entity_type": "Thing",
+            "resource":    ""
+        },
+        
+    ],
+    
+}'
+
+printf "\tMQTT group services created\n"
+
+#
+# Creation of temperature sensors associated with meteorological stations
+# Every single entity must have an uniqie device_id
+
+curl -s -o /dev/null -X POST \
+  'http://iot-agent:$IOTA_NORTH_PORT/iot/devices' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: iotupo' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+    "devices": [
+        {
+            "device_id":   "temperature001",
+            "entity_name": "urn:ngsi-ld:TemperatureSensor:001",
+            "entity_type": "TemperatureSensor",
+            "protocol":    "PDI-IoTA-UltraLight",
+            "transport":   "MQTT",
+            "timezone":    "Europe/Berlin",
+            "attributes": [
+                { 
+                    "object_id": "t", 
+                    "name": "temperature", 
+                    "type": "Float" 
+                }
+            ],
+            "static_attributes": [
+                {            
+                    "name": "location",
+                    "type": "geo:json",
+                    "value": {
+                        "type": "Point",
+                        "coordinates": [47.659216, 9.1750718]
+                    }
+                },
+                { 
+                    "name":"refWeatherStation", 
+                    "type": "Relationship", 
+                    "value": "urn:ngsi-ld:WeatherStation:001"
+                }
+            ]
+        },
+        {
+            "device_id":   "temperature002",
+            "entity_name": "urn:ngsi-ld:TemperatureSensor:002",
+            "entity_type": "TemperatureSensor",
+            "protocol":    "PDI-IoTA-UltraLight",
+            "transport":   "MQTT",
+            "timezone":    "Europe/Berlin",
+            "attributes": [
+                { 
+                    "object_id": "t", 
+                    "name": "temperature", 
+                    "type": "Float" 
+                }
+            ],
+            "static_attributes": [
+                {            
+                    "name": "location",
+                    "type": "geo:json",
+                    "value": {
+                        "type": "Point",
+                        "coordinates": [47.3744489, 8.5410422]
+                    }
+                },
+                { 
+                    "name":"refWeatherStation", 
+                    "type": "Relationship", 
+                    "value": "urn:ngsi-ld:WeatherStation:002"
+                }
+            ]
+        },
+        {
+            "device_id":   "temperature003",
+            "entity_name": "urn:ngsi-ld:TemperatureSensor:003",
+            "entity_type": "TemperatureSensor",
+            "protocol":    "PDI-IoTA-UltraLight",
+            "transport":   "MQTT",
+            "timezone":    "Europe/Berlin",
+            "attributes": [
+                { 
+                    "object_id": "t", 
+                    "name": "temperature", 
+                    "type": "Float" 
+                }
+            ],
+            "static_attributes": [
+                {            
+                    "name": "location",
+                    "type": "geo:json",
+                    "value": {
+                        "type": "Point",
+                        "coordinates": [50.0596288, 14.4464593]
+                    }
+                },
+                { 
+                    "name":"refWeatherStation", 
+                    "type": "Relationship", 
+                    "value": "urn:ngsi-ld:WeatherStation:003"
+                }
+            ]
+        }
+    ]
+}'
+
+printf "\tSensors created\n"
+
+#
+# Creation of alarm actuators associated with meteorological stations
+#
+
+curl -s -o /dev/null -X POST \
+  'http://iot-agent:$IOTA_NORTH_PORTiot/devices' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: iotupo' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+    "devices": [
+        {
+            "device_id": "alarm001",
+            "entity_name": "urn:ngsi-ld:AlarmActuator:001",
+            "entity_type": "AlarmActuator",
+            "protocol": "PDI-IoTA-UltraLight",
+            "transport": "MQTT",
+            "commands": [
+                { "name": "ring", "type": "command" }
+            ],
+            "static_attributes": [
+                { "name":"refWeatherStation", "type": "Relationship", "value": "urn:ngsi-ld:WeatherStation:001"}
+            ]
+        },
+        {
+            "device_id": "alarm002",
+            "entity_name": "urn:ngsi-ld:AlarmActuator:002",
+            "entity_type": "AlarmActuator",
+            "protocol": "PDI-IoTA-UltraLight",
+            "transport": "MQTT",
+            "commands": [
+                { "name": "ring", "type": "command" }
+            ],
+            "static_attributes": [
+                { "name":"refWeatherStation", "type": "Relationship", "value": "urn:ngsi-ld:WeatherStation:002"}
+            ]
+        },
+        {
+            "device_id": "alarm003",
+            "entity_name": "urn:ngsi-ld:AlarmActuator:003",
+            "entity_type": "AlarmActuator",
+            "protocol": "PDI-IoTA-UltraLight",
+            "transport": "MQTT",
+            "commands": [
+                { "name": "ring", "type": "command" }
+            ],
+            "static_attributes": [
+                { "name":"refWeatherStation", "type": "Relationship", "value": "urn:ngsi-ld:WeatherStation:003"}
+            ]
+        }
+    ]
+}'
+
+printf "\tActuators created\n"
+
+#
+# Subscriber creation to temperature changes that links to Telegraf, for sending to InfluxDb
+# This is from the 4. Orion Subscription Postman POST
+
+curl -s -o /dev/null -X POST \
+  'http://orion:$ORION_PORT/v2/subscriptions/' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: iotupo' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+            "description": "Test subscription",
+            "subject": {
+                "entities": [
+                    {
+                        "idPattern": ".*",
+                        "type": "TemperatureSensor"
+                    }
+                ]
+            },
+            "notification": {
+                "http": {
+                "url": "http://telegraf:$TELEGRAF_PORT/telegraf"
+            },
+            "attrsFormat": "keyValues",
+            "attrs": [
+                "temperature",
+                "refWeatherStation",
+                "TimeInstant"
+            ],
+            "metadata": ["dateCreated", "dateModified"]
+        }
+    }'
+
+printf "\tSubscription created\n"
+
+echo -e " \033[1;32mdone\033[0m"
