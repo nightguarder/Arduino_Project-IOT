@@ -18,6 +18,7 @@
 # Local variables
 # =================================================================
 set -e
+
 DOCKER_CMD="docker-compose"
 USAGE="usage: services [help | start [test] | stop]"
 
@@ -41,7 +42,7 @@ fi
 # Script functions()
 # =================================================================
 loadData () {
-	docker run --rm -v $(pwd)/src/import-initial-context-data.sh:\import-initial-context-data.sh: \
+	docker run --rm -v $(pwd)/src/import-initial-context-data.sh:/import-initial-context-data.sh: \
 		--network fiware_arduino_default \
         --entrypoint /bin/ash curlimages/curl import-initial-context-data.sh
 	waitForIoTAgent
@@ -50,7 +51,7 @@ loadData () {
 # Display the table of running services
 displayServices () {
 	echo ""
-	docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" --filter name="(fiware-*|mosquitto)"
+	docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" --filter label="com.wordpress.fcosfc=fiware_arduino"
 	echo ""
 }
 # Run when ./services stop
@@ -138,13 +139,13 @@ case "${command}" in
 		echo -e "Starting containers: \033[1;34mOrion\033[0m and a \033[1mMongoDB\033[0m database."
 		echo -e "- \033[1;34mOrion\033[0m is the context broker"
 		echo ""		
-		$DOCKER_CMD -f docker/docker-compose.yml up -d --remove-orphans
+		${DOCKER_CMD} -f docker/docker-compose.yaml up -d --remove-orphans
 		waitForMongo
 		addDatabaseIndex
 		waitForOrion
-		waitIoTAgent
 		loadData
 		displayServices
+		echo -e "Now open \033[4mhttp://localhost:3000/device/monitor\033[0m"
 		;;
 	"stop")
 		export $(cat docker/.env | grep "#" -v)
