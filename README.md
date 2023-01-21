@@ -3,10 +3,10 @@
 * The goal of this project is to create a smart-home implementation using my Arduino RP2040.  
 
 ## Todo list
-- [] Implement all Docker images.
-- [] Connect Arduino to the MQTT client and publish the data.
-- [] Visualize data from Arduino on Grafana dashboard 
-- [] Start a Telegram bot that will notify you about events.
+- [ ] Implement all Docker images.
+- [ ] Connect Arduino to the MQTT client and publish the data.
+- [ ] Visualize data from Arduino on Grafana dashboard 
+- [ ] Start a Telegram bot that will notify you about events.
 
 
 ## MQTT Broker
