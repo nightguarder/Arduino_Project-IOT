@@ -9,7 +9,7 @@
 - [ ] Start a Telegram bot that will notify you about events.
 
 ## Bugs list
-- [ ] #1 
+- [ ] https://github.com/nightguarder/Arduino_Project-IOT/issues/1 
 
 ## MQTT Broker
 > MQTT is a publish-subscribe-based messaging protocol used in the internet of Things
