@@ -1,0 +1,4 @@
+#Dockerfile: image definition for an MQTT client.
+FROM alpine:3.14
+RUN apk add --no-cache mosquitto-clients
+ENTRYPOINT [ "/opt/mqtt-client/init.sh" ]
