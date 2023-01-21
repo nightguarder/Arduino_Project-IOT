@@ -54,7 +54,7 @@ printf "\tWeather Station entities created\n"
 curl -s -o /dev/null -X POST \
   'http://iot-agent:$IOTA_NORTH_PORT/iot/services' \
   -H 'Content-Type: application/json' \
-  -H 'fiware-service: iotupo' \
+  -H 'fiware-service: openiot' \
   -H 'fiware-servicepath: /' \
   -d '{
     "services": [
@@ -78,7 +78,7 @@ printf "\tMQTT group services created\n"
 curl -s -o /dev/null -X POST \
   'http://iot-agent:$IOTA_NORTH_PORT/iot/devices' \
   -H 'Content-Type: application/json' \
-  -H 'fiware-service: iotupo' \
+  -H 'fiware-service: openiot' \
   -H 'fiware-servicepath: /' \
   -d '{
     "devices": [
@@ -184,7 +184,7 @@ printf "\tSensors created\n"
 curl -s -o /dev/null -X POST \
   'http://iot-agent:$IOTA_NORTH_PORTiot/devices' \
   -H 'Content-Type: application/json' \
-  -H 'fiware-service: iotupo' \
+  -H 'fiware-service: openiot' \
   -H 'fiware-servicepath: /' \
   -d '{
     "devices": [
@@ -239,7 +239,7 @@ printf "\tActuators created\n"
 curl -s -o /dev/null -X POST \
   'http://orion:$ORION_PORT/v2/subscriptions/' \
   -H 'Content-Type: application/json' \
-  -H 'fiware-service: iotupo' \
+  -H 'fiware-service: openiot' \
   -H 'fiware-servicepath: /' \
   -d '{
             "description": "Test subscription",
