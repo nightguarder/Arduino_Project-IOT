@@ -49,9 +49,9 @@
 * Fiware IOT MQTT repository: [Github repo](https://github.com/FIWARE/tutorials.IoT-over-MQTT)
 
 ## Checklist:
-[x] Installed Docker on your system. *previous experience recommended*
-[x] Arduino (RP2040)
+- [x] Installed Docker on your system. *previous experience recommended*
+- [x] Arduino (RP2040)
    - Arduino device or extensions that can connect to MQTT broker via Wi-fi
-[x] Postman or cURL command interface
-[x] Programming skills
-[x] Patience & time
+- [x] Postman or cURL command interface
+- [x] Programming skills
+- [x] Patience & time
