@@ -1,6 +1,8 @@
 # Arduino_Project-IOT
 * Welcome to my first official Arduino IOT project.
 * The goal of this project is to create a smart-home implementation using my Arduino RP2040.  
+* As a start the Arduino will monitor the internal temperature.
+* Future plan is to connect other smart devices and ultimately monitor the whole house.
 
 ![smart home plan](content/Screenshots/IOT_plan.png)
 
