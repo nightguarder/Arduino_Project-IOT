@@ -2,7 +2,7 @@
 * Welcome to my first official Arduino IOT project.
 * The goal of this project is to create a smart-home implementation using my Arduino RP2040.  
 
-![smart home plan](content/Screenshots/Smart_home_plan.drawio.png)
+![smart home plan](content/Screenshots/Smart home plan.drawio.png)
 
 ## Todo list
 - [x] Implement all Docker images.
