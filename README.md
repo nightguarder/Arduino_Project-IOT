@@ -4,7 +4,7 @@
 * As a start the Arduino will monitor the internal temperature.
 * Future plan is to connect other smart devices and ultimately monitor the whole house.
 
-![smart home plan](content/Screenshots/IOT_plan.png)
+![smart home plan](content/Screenshots/IOT_plan_day.png)
 
 ## Todo list
 - [x] Implement all Docker images.
