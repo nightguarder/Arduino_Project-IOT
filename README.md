@@ -57,3 +57,11 @@
 - [x] Postman or cURL command interface
 - [x] Programming skills
 - [x] Patience & time
+
+## Setup:
+1. ./services start
+2. Docker images are running
+3. In new terminal run: 
+**MQTT subriber**
+` docker run -it --rm --name mosquitto_sub --network fiware_arduino_default   --platform linux/amd64 efrecon/mqtt-client:latest sub -h mosquitto -p 1883 -t '/#' `
+4. POST arduino to IoT broker:

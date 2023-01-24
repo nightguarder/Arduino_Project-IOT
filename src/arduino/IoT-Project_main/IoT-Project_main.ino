@@ -1,3 +1,5 @@
+#include <Arduino_LSM6DSOX.h>
+
 #include <WiFiNINA.h> //Official WiFiNINA library for all boards Author: Arduino
 
 #include <SPI.h> //Preinstalled library for Arduino Author: Arduino
