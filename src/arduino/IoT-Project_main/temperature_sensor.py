@@ -51,8 +51,9 @@ def publishData(client,topic, payload):
     print("topic: " + topic)
     print("payload: " + payload)
     client.publish(topic, payload)
-def read_and_publish_temperature():
-    prevTemperature = None # Reset before running the function again
+
+def read_publish_Temperature():
+    prevTemperature = None
     while True:
         raw_temp = i2c.readfrom_mem(LSM6DSOX_I2C_ADDRESS, TEMP_OUT_L, 2)
         raw_temp = (raw_temp[1] << 8) | raw_temp[0]
@@ -61,13 +62,13 @@ def read_and_publish_temperature():
             prevTemperature = temperature
             payload = topic_pref + str(temperature)
             publishData(client,topic_pub, payload)
-        # Delay for some time before reading the sensor again
+        #Delay for some time
         time.sleep(3)
-
 try:
     client = mqtt_connect()
-    read_and_publish_temperature()
+    read_publish_Temperature()
 except OSError as e:
     reconnect()
+
 
 
