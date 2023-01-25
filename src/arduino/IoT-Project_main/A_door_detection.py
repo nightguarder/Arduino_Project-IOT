@@ -60,47 +60,52 @@ def reconnect_to_wifi():
 # =================================================================
 # MQTT configuration
 # =================================================================
-mqtt_server = '172.20.10.7' #Hotspot IPv4
+#MQTT SETUP
+mqtt_server = '172.20.10.7'#Hotspot IPv4 adress
 client_id = 'arduino001'
-topic_pub = b'/ul/4pacosaucedo2guadiaro4s40d59ov/arduino001/attrs'
-topic_msg = b'door|movement'
+topic_pub = '/ul/4pacosaucedo2guadiaro4s40d59ov/arduino001/attrs'
+topic_pref = 'door|'
 
 def connect_to_mqtt(client_id, broker_ip):
     client = MQTTClient(client_id, broker_ip)
     client.connect()
-    print("Connection to MQTT succesfull.\n")
+    print("Client connected to broker.\n")
     return client
-
-def send_to_mqtt(client, topic, message):
-    ##print("Sending data...")
-    client.publish(topic, message)
-
 def disconnect_from_mqtt(client):
+    print("\nDisconnecting from MQTT..\n")
     client.disconnect()
 
+def publishData(client,topic, payload):
+   print("topic: " + topic)
+   print("payload: " + payload)
+   client.publish(topic, payload)
+
+def run_door_detection(INT_MODE, INT_FLAG):
+    while True:
+        if INT_MODE:
+            if INT_FLAG:
+                INT_FLAG = False
+                buf = lsm.read_mlc_output()
+                if buf is not None:
+                    print("-", UCF_LABELS[buf[0]])
+                    payload = topic_pref + UCF_LABELS[buf[0]]
+                    publishData(client, topic_pub, payload)
+        else:
+            buf = lsm.read_mlc_output()
+            if buf is not None:
+                print(UCF_LABELS[buf[0]])
+        time.sleep(0.1)
 
 try:
     connect_to_wifi()
     client = connect_to_mqtt(client_id, mqtt_server)
+    run_door_detection(INT_MODE,INT_FLAG)
 
 except OSError as e:
     print("WLAN connection failed.\n'")
     reconnect_to_wifi()
     print("or")
     print('Failed to connect to the MQTT Broker. Reconnecting...\n')
-
-while (True):
-    if (INT_MODE):
-        if (INT_FLAG):
-            INT_FLAG = False
-            buf = lsm.read_mlc_output()
-            if buf is not None:
-                print("-", UCF_LABELS[buf[0]])
-                send_to_mqtt(client, topic_msg, topic_msg)
-    else:
-        buf = lsm.read_mlc_output()
-        if (buf != None):
-            print(UCF_LABELS[buf[0]])
-            send_to_mqtt(client, topic_msg, topic_msg)
+    disconnect_from_mqtt(client)
 
 disconnect_from_mqtt(client)
