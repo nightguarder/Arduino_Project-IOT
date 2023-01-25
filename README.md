@@ -8,8 +8,8 @@
 
 ## Todo list
 - [x] Implement all Docker images.
-- [ ] Connect Arduino to the MQTT client and publish the data.
-- [ ] Visualize data from Arduino on Grafana dashboard 
+- [x] Connect Arduino to the MQTT client and publish the data.
+- [x] Visualize data from Arduino on Grafana dashboard 
 - [ ] Start a Telegram bot that will notify you about events.
 - [ ] Enable more functionalitios for InfluxDB
 
