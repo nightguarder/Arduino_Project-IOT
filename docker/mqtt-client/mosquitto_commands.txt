@@ -1,0 +1,44 @@
+##DOCKER COMPOSE
+docker-compose -f docker-compose_mqtt.yaml up
+##MQTT Subscriber
+docker run -it --rm --name mqtt-subscriber --network exercise3_default efrecon/mqtt-client:latest sub -h mosquitto -t '/#' 
+##MQTT Publisher
+docker run -it --rm --name mqtt-publisher  --network exercise3_default --platform linux/amd64 efrecon/mqtt-client:latest pub -h mosquitto -m "Dude it works" -t '/test'
+##GET SEND
+docker run -it --rm --name mqtt-publisher  --network fiware_default --platform linux/amd64 efrecon/mqtt-client:latest pub -h mosquitto -m "dance|NO_DANCING" -t "ul/4jggokgpepnvsb2uv4s40d59ov/arduino001/attrs"
+
+time=2023-01-19T18:26:04.425Z | lvl=WARN | corr=2fcfaa9a-ac85-42e5-844d-ebed02c90a88 | trans=2fcfaa9a-ac85-42e5-844d-ebed02c90a88 | op=IOTAUL.Common.Binding | from=n/a | srv=n/a | subsrv=n/a | msg=MEASURES-004: Device not found for topic [/ul/4jggokgpepnvsb2uv4s40d59ov/arduino001/attrs] | comp=IoTAgent
+
+
+#docker compose
+#Dummy app test port
+  tutorial:
+    labels:
+      org.fiware: 'tutorial'
+    image: fiware/tutorials.context-provider
+    hostname: iot-sensors
+    container_name: fiware_LOCALHOST
+    networks:
+      default:
+        aliases:
+          - tutorial
+          - context-provider
+    expose:
+      - "3000" # ${TUTORIAL_APP_PORT}
+      - "3001" # ${TUTORIAL_DUMMY_DEVICE_PORT}
+    ports:
+      - "3000:3000" # localhost:3000
+      - "3001:3001" # localhost:3001
+    environment:
+      - "MONGO_URL=mongodb://mongo-db:27017"
+      - "DEBUG=tutorial:*"
+      - "IOTA_HTTP_HOST=iot-agent"
+      - "IOTA_HTTP_PORT=7896"
+      - "DUMMY_DEVICES_PORT=3001"
+      - "DUMMY_DEVICES_API_KEY=4jggokgpepnvsb2uv4s40d59ov"  
+#SEND TEST DATA
+docker run -it --rm --name mqtt-publisher  --network fiware_arduino_default --platform linux/amd64 efrecon/mqtt-client:latest pub -h mosquitto -m "door|door_movement" -t "/ul/4pacosaucedo2guadiaro4s40d59ov/arduino001/attrs"
+#MQTT subription
+docker run -it --rm --name mosquitto_sub --network fiware_arduino_default   --platform linux/amd64 efrecon/mqtt-client:latest sub -h mosquitto -p 1883 -t '/#' 
+#MQTT logs 
+docker logs --tail 10 mosquitto

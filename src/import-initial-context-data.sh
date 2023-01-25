@@ -1,15 +1,15 @@
 #!/bin/bash
 #
-#  import-initial-context-data.sh: script to initialize the Orion context data
-#  This will POST all the entities at once to the Orion Context Broker
-#  Reference: https://github.com/FIWARE/tutorials.Step-by-Step
+#  import-initial-context-data.sh: script de carga del contexto inicial del sistema
+#
+#  Referencia: https://github.com/FIWARE/tutorials.Step-by-Step
 
 set -e
 
 printf "⏳ Loading initial context data \n"
 
 #
-# Create multiple Weather stations
+# Crea varias entidades de tipo Estación Meteorológica
 #
 
 curl -s -o /dev/null -X POST \
@@ -23,7 +23,7 @@ curl -s -o /dev/null -X POST \
             "type": "WeatherStation",
             "name": {
                 "type": "Text",
-                "value": "Konstanz"
+                "value": "Algeciras"
             }
         },
   	    {
@@ -31,7 +31,7 @@ curl -s -o /dev/null -X POST \
             "type": "WeatherStation",
             "name": {
                 "type": "Text",
-                "value": "Zürich"
+                "value": "San Roque"
             }
         },
   	    {
@@ -39,7 +39,15 @@ curl -s -o /dev/null -X POST \
             "type": "WeatherStation",
             "name": {
                 "type": "Text",
-                "value": "Prague"
+                "value": "La Línea de la Concepción"
+            }
+        },
+        {
+            "id": "urn:ngsi-ld:Arduino:001",
+            "type": "ArduinoSensor",
+            "name": {
+                "type": "Text",
+                "value": "Arduino"
             }
         }
     ]
@@ -48,11 +56,11 @@ curl -s -o /dev/null -X POST \
 printf "\tWeather Station entities created\n"
 
 #
-# Creation of the group of services for sensors using MQTT
+# Creación del grupo de servicios para sensores que usan MQTT
 #
 
 curl -s -o /dev/null -X POST \
-  'http://iot-agent:$IOTA_NORTH_PORT/iot/services' \
+  'http://iot-agent:4041/iot/services' \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: iotupo' \
   -H 'fiware-servicepath: /' \
@@ -60,23 +68,21 @@ curl -s -o /dev/null -X POST \
     "services": [
         {
             "apikey":      "4pacosaucedo2guadiaro4s40d59ov",
-            "cbroker":     "http://orion:$ORION_PORT",
+            "cbroker":     "http://orion:1026",
             "entity_type": "Thing",
             "resource":    ""
-        },
-        
-    ],
-    
+        }
+    ]
 }'
 
 printf "\tMQTT group services created\n"
 
 #
-# Creation of temperature sensors associated with meteorological stations
-# Every single entity must have an uniqie device_id
+# Creación de sensores de temperatura asociados a las estaciones meteorológicas
+#
 
 curl -s -o /dev/null -X POST \
-  'http://iot-agent:$IOTA_NORTH_PORT/iot/devices' \
+  'http://iot-agent:4041/iot/devices' \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: iotupo' \
   -H 'fiware-servicepath: /' \
@@ -88,7 +94,7 @@ curl -s -o /dev/null -X POST \
             "entity_type": "TemperatureSensor",
             "protocol":    "PDI-IoTA-UltraLight",
             "transport":   "MQTT",
-            "timezone":    "Europe/Berlin",
+            "timezone":    "Europe/Madrid",
             "attributes": [
                 { 
                     "object_id": "t", 
@@ -102,7 +108,7 @@ curl -s -o /dev/null -X POST \
                     "type": "geo:json",
                     "value": {
                         "type": "Point",
-                        "coordinates": [47.659216, 9.1750718]
+                        "coordinates": [36.13, -5.45]
                     }
                 },
                 { 
@@ -118,7 +124,7 @@ curl -s -o /dev/null -X POST \
             "entity_type": "TemperatureSensor",
             "protocol":    "PDI-IoTA-UltraLight",
             "transport":   "MQTT",
-            "timezone":    "Europe/Berlin",
+            "timezone":    "Europe/Madrid",
             "attributes": [
                 { 
                     "object_id": "t", 
@@ -132,7 +138,7 @@ curl -s -o /dev/null -X POST \
                     "type": "geo:json",
                     "value": {
                         "type": "Point",
-                        "coordinates": [47.3744489, 8.5410422]
+                        "coordinates": [36.21, -5.39]
                     }
                 },
                 { 
@@ -148,7 +154,7 @@ curl -s -o /dev/null -X POST \
             "entity_type": "TemperatureSensor",
             "protocol":    "PDI-IoTA-UltraLight",
             "transport":   "MQTT",
-            "timezone":    "Europe/Berlin",
+            "timezone":    "Europe/Madrid",
             "attributes": [
                 { 
                     "object_id": "t", 
@@ -162,7 +168,7 @@ curl -s -o /dev/null -X POST \
                     "type": "geo:json",
                     "value": {
                         "type": "Point",
-                        "coordinates": [50.0596288, 14.4464593]
+                        "coordinates": [36.17, -5.35]
                     }
                 },
                 { 
@@ -171,18 +177,33 @@ curl -s -o /dev/null -X POST \
                     "value": "urn:ngsi-ld:WeatherStation:003"
                 }
             ]
+        },
+        {
+            "device_id":   "arduino001",
+            "entity_name": "urn:ngsi-ld:Arduino:001",
+            "entity_type": "ArduinoSensor",
+            "protocol":    "PDI-IoTA-UltraLight",
+            "transport":   "MQTT",
+            "timezone":    "Europe/Berlin",
+            "attributes": [
+                { 
+                    "object_id": "door", 
+                    "name": "motion", 
+                    "type": "String" 
+                }
+            ]
         }
     ]
 }'
 
-printf "\tSensors created\n"
+printf "\tTemperature + Arduino Sensors created\n"
 
 #
-# Creation of alarm actuators associated with meteorological stations
+# Creación de actuadores de alarma asociaciados a las estaciones meteorológicas
 #
 
 curl -s -o /dev/null -X POST \
-  'http://iot-agent:$IOTA_NORTH_PORTiot/devices' \
+  'http://iot-agent:4041/iot/devices' \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: iotupo' \
   -H 'fiware-servicepath: /' \
@@ -230,14 +251,14 @@ curl -s -o /dev/null -X POST \
     ]
 }'
 
-printf "\tActuators created\n"
+printf "\tAlarm Actuators created\n"
 
 #
-# Subscriber creation to temperature changes that links to Telegraf, for sending to InfluxDb
-# This is from the 4. Orion Subscription Postman POST
+# Creación del suscriptor a los cambios de temperatura que enlaza con Telegraf, para envío a InfluxDb
+#
 
 curl -s -o /dev/null -X POST \
-  'http://orion:$ORION_PORT/v2/subscriptions/' \
+  'http://orion:1026/v2/subscriptions/' \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: iotupo' \
   -H 'fiware-servicepath: /' \
@@ -253,18 +274,45 @@ curl -s -o /dev/null -X POST \
             },
             "notification": {
                 "http": {
-                "url": "http://telegraf:$TELEGRAF_PORT/telegraf"
+                "url": "http://telegraf:8080/telegraf"
             },
             "attrsFormat": "keyValues",
             "attrs": [
                 "temperature",
                 "refWeatherStation",
                 "TimeInstant"
-            ],
-            "metadata": ["dateCreated", "dateModified"]
+            ]
         }
     }'
 
-printf "\tSubscription created\n"
+printf "\tSubscription Temperature created\n"
+
+curl -s -o /dev/null -X POST \
+  'http://orion:1026/v2/subscriptions/' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: iotupo' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+            "description": "Arduino subscription",
+            "subject": {
+                "entities": [
+                    {
+                        "idPattern": ".*",
+                        "type": "ArduinoSensor"
+                    }
+                ]
+            },
+            "notification": {
+                "http": {
+                "url": "http://telegraf:8080/telegraf"
+            },
+            "attrsFormat": "keyValues",
+            "attrs": [
+                "motion",
+                "TimeInstant"
+            ]
+        }
+    }'
+printf "\tArduino telegraf created\n"
 
 echo -e " \033[1;32mdone\033[0m"

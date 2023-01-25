@@ -24,7 +24,6 @@
 > An IoT Agent is a component that lets a group of devices sends their data to and be managed from a Context Broker using their own native protocols. The API used here is NGSIv2.
 * To access IOT Agent go to: `http://localhost:4041/iot/about`
 * [Implementation example](https://fiware-tutorials.readthedocs.io/en/latest/iot-agent.html#22-request)
-
 ## MQTT Broker
 > MQTT is a publish-subscribe-based messaging protocol used in the internet of Things
 * Serves as a middleman between IOT devices (sensors) and Fiware network. 
@@ -43,8 +42,7 @@
 > Visually display the data from IOT devices (sensors).
 * By default Grafana will have an InfluxDB configured with the available data.   
 * To access grafana go to: `http://localhost:30001`   
-## Orion Context Broker
->
+
 ## Prerequsities & References:
 * Must have knowledge: [Orion Context basics](https://youtu.be/pK4GgYjlmdY)
 * Fiware IOT MQTT documentation: [Fiware docs](https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt.html)
@@ -60,8 +58,13 @@
 
 ## Setup:
 1. ./services start
-2. Docker images are running
-3. In new terminal run: 
-**MQTT subriber**
+   - Check if all docker images are running
+2. In new terminal run: 
+   - **MQTT subriber**
+` docker logs --tail 10 mosquitto `
+- to check if mqtt is running and arduino01 is connected
 ` docker run -it --rm --name mosquitto_sub --network fiware_arduino_default   --platform linux/amd64 efrecon/mqtt-client:latest sub -h mosquitto -p 1883 -t '/#' `
-4. POST arduino to IoT broker:
+- to run the subscriber and listen to data incoming from arduino
+3. Run Script
+   - temperature_sensor.py
+   - door_detection.py

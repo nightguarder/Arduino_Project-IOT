@@ -170,7 +170,8 @@
           ]
         }
       ],
-      "title": "Temperatura",
+      "title": "Temperature",
+      "transparent": true,
       "type": "timeseries"
     },
     {
@@ -295,7 +296,8 @@
           ]
         }
       ],
-      "title": "Temperatura",
+      "title": "Temperature",
+      "transparent": true,
       "type": "gauge"
     }
   ],
@@ -337,7 +339,7 @@
   },
   "timezone": "browser",
   "title": "Temperature Dashboard",
-  "uid": "fiware_arduino",
+  "uid": "fiware-iot-upo",
   "version": 1,
   "weekStart": ""
 }
