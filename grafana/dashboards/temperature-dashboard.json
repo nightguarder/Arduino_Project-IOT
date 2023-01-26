@@ -131,7 +131,7 @@
           "groupBy": [
             {
               "params": [
-                "$__interval"
+                "time(10s)"
               ],
               "type": "time"
             },
@@ -142,7 +142,7 @@
               "type": "fill"
             }
           ],
-          "measurement": "weather_station",
+          "measurement": "arduino",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "A",
@@ -268,7 +268,7 @@
               "type": "fill"
             }
           ],
-          "measurement": "weather_station",
+          "measurement": "arduino",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "A",
