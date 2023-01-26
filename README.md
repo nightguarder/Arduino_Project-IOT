@@ -12,6 +12,7 @@
 - [x] Visualize data from Arduino on Grafana dashboard 
 - [ ] Start a Telegram bot that will notify you about events.
 - [ ] Enable more functionalitios for InfluxDB
+- [ ] Improve Grafana dashboards
 
 ## Issues list
 - [ ] https://github.com/nightguarder/Arduino_Project-IOT/issues/1 
