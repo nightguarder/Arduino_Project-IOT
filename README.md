@@ -57,6 +57,7 @@
 - [x] Patience & time
 
 ## Setup:
+0. Laptop (PC) should be connected to the same network as Arduino (Hotspot)
 1. ./services start
    - Check if all docker images are running
 2. In new terminal run: 
