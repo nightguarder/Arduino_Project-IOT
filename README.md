@@ -27,6 +27,7 @@
 ## MQTT Broker
 > MQTT is a publish-subscribe-based messaging protocol used in the internet of Things
 * Serves as a middleman between IOT devices (sensors) and Fiware network. 
+![MQTT connection](https://github.com/nightguarder/Arduino_Project-IOT/blob/e0cf474a0a61c84c0c0d2b1df1ec38da44f022ed/content/Screenshots/Succesfull%20MQTT%20connection.png)
 ## Telegraf
 >Telegraf is a server-based agent for collecting and sending all metrics and events from databases, systems, and **IoT sensors**.
 * The raw data is sent to **InfluxDB**, therefore you can visualize them in **Grafana**.
