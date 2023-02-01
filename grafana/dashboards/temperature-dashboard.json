@@ -38,7 +38,7 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "Grados Centígrados",
+            "axisLabel": "Temperature range",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -170,7 +170,7 @@
           ]
         }
       ],
-      "title": "Temperature",
+      "title": "Temperature History",
       "transparent": true,
       "type": "timeseries"
     },
