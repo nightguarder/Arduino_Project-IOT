@@ -44,6 +44,7 @@
 > Visually display the data from IOT devices (sensors).
 * By default Grafana will have an InfluxDB configured with the available data.   
 * To access grafana go to: `http://localhost:30001`   
+![Grafana_display](content/Screenshots/grafana_dashboard.png)
 
 ## Prerequsities & References:
 * Must have knowledge: [Orion Context basics](https://youtu.be/pK4GgYjlmdY)
