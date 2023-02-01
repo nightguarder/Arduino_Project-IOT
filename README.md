@@ -10,6 +10,7 @@
 - [x] Implement all Docker images.
 - [x] Connect Arduino to the MQTT client and publish the data.
 - [x] Visualize data from Arduino on Grafana dashboard 
+- [x] Arduino simulator that sends random temperature to MQTT subscriber
 - [ ] Start a Telegram bot that will notify you about events.
 - [ ] Enable more functionalitios for InfluxDB
 - [ ] Improve Grafana dashboards
@@ -44,6 +45,7 @@
 > Visually display the data from IOT devices (sensors).
 * By default Grafana will have an InfluxDB configured with the available data.   
 * To access grafana go to: `http://localhost:30001`   
+![Grafana_display](content/Screenshots/grafana_dashboard.png)
 
 ## Prerequsities & References:
 * Must have knowledge: [Orion Context basics](https://youtu.be/pK4GgYjlmdY)
