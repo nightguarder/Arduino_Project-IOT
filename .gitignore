@@ -1,3 +1,4 @@
 arduino/IoT-Project_main/arduino_secrets.h
 content/Documentation.txt
 src/arduino/IoT-Project_main/wifi_credentials.py
+src/arduino-simulator
