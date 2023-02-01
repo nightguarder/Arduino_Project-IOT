@@ -10,6 +10,7 @@
 - [x] Implement all Docker images.
 - [x] Connect Arduino to the MQTT client and publish the data.
 - [x] Visualize data from Arduino on Grafana dashboard 
+- [x] Arduino simulator that sends random temperature to MQTT subscriber
 - [ ] Start a Telegram bot that will notify you about events.
 - [ ] Enable more functionalitios for InfluxDB
 - [ ] Improve Grafana dashboards
