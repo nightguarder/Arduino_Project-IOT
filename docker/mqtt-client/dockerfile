@@ -1,6 +1,6 @@
-#
-# Dockerfile: definición de imagen para un cliente MQTT.
-#             Los scripts deben ser inyectados como volúmenes en /opt/mqtt-client
+
+# Dockerfile: image definition for an MQTT client.
+#   Scripts must be injected as volumes in /opt/mqtt-client
 # 
 FROM alpine:3.14
 RUN apk add --no-cache mosquitto-clients

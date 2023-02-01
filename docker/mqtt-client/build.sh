@@ -1,6 +1,6 @@
-#!/bin/bash
+!/bin/bash
 #
-#   build.sh: script que construye la imagen y la publica.
+#   build.sh: script will run the subscriber "behind" docker
 #
 docker build . -t fcosfc/mqtt-client
 docker login
