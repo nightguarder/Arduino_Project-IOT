@@ -5,8 +5,8 @@
 * Future plan is to connect other smart devices and ultimately monitor the whole house.
 
 ![smart home plan](content/Screenshots/IOT_plan_day.png)
-
 ## Todo list
+### The project is now postponned, because my Arduino connector broke :/
 - [x] Implement all Docker images.
 - [x] Connect Arduino to the MQTT client and publish the data.
 - [x] Visualize data from Arduino on Grafana dashboard 
