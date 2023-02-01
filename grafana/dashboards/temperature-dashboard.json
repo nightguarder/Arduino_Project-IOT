@@ -131,7 +131,7 @@
           "groupBy": [
             {
               "params": [
-                "time(10s)"
+                "$__interval"
               ],
               "type": "time"
             },
